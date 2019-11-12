@@ -1,4 +1,15 @@
-﻿using System;
+﻿/*
+ * Author: Misaka Mikoto
+ * Url:    https://github.com/easy66/MsgCenter
+ * Desc:   消息派发中心
+ * 
+ * 使用方式：
+ *  1. 在 MsgDef 中定义消息枚举和回调函数类型
+ *  2. 使用 Register 注册回调
+ *  3. SendMsg 派发消息
+ */
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,7 +67,10 @@ public class MsgCenter
         if (s_dicType.TryGetValue(msgId, out type))
         {
             if (type != cbType)
+            {
+                Debug.LogErrorFormat("错误的消息回调函数参数类型:Msg:{0}, 期望类型:{1}", msgId, cbType.Name);
                 return;
+            }
 
             List<Delegate> lst;
             if (!s_dicActions.TryGetValue(msgId, out lst))

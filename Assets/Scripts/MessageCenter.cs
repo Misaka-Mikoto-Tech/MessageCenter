@@ -1,6 +1,6 @@
 ﻿/*
  * Author: Misaka Mikoto
- * Url:    https://github.com/easy66/MsgCenter
+ * Url:    https://github.com/easy66/MessageCenter
  * Desc:   消息派发中心
  * 
  * 使用方式：

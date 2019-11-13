@@ -11,10 +11,10 @@ public enum MsgId
 
 public static class MsgTypeBinder
 {
-    public static void BindTypes(Dictionary<MsgId, Type> dicType)
+    public static void BindTypes()
     {
-        dicType.Add(MsgId.MsgA, typeof(Action<int>));
-        dicType.Add(MsgId.MsgB, typeof(Action<float, string>));
+        MessageCenter.BindType(MsgId.MsgA, typeof(Action<int>));
+        MessageCenter.BindType(MsgId.MsgB, typeof(Action<float, string>));
     }
 }
 

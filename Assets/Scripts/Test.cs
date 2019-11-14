@@ -5,22 +5,21 @@ using UnityEngine;
 
 public class Test : MonoBehaviour {
 
+
 	void Awake ()
     {
-        MessageCenter.Register<int>(MsgId.MsgA, OnMsgA);
-        MessageCenter.Register<float, string>(MsgId.MsgB, OnMsgB);
+        MessageCenter.Register(MsgTypeVar.MsgA, OnMsgA);
+        MessageCenter.Register(MsgTypeVar.MsgB, OnMsgB);
     }
 
     void OnDestroy()
     {
-        MessageCenter.UnRegister<int>(MsgId.MsgA, OnMsgA); // TODO 可以由 UIManager.CloseUI 自动执行
-        MessageCenter.UnRegister<float, string>(MsgId.MsgB, OnMsgB);
+        MessageCenter.UnRegister(MsgTypeVar.MsgA, OnMsgA); // TODO 可以由 UIManager.CloseUI 自动执行
+        MessageCenter.UnRegister(MsgTypeVar.MsgB, OnMsgB);
     }
 
     void OnEnable()
     {
-        
-
         StartCoroutine(coTestMessage());
         StartCoroutine(coUpdateMessageCenter());
     }
@@ -43,28 +42,28 @@ public class Test : MonoBehaviour {
 
     IEnumerator coTestMessage()
     {
-        MessageCenter.SendMessage(MsgId.MsgA, 5);
+        MessageCenter.SendMessage(MsgTypeVar.MsgA, 5);
 
         yield return new WaitForSeconds(1f);
-        MessageCenter.PostMessage(MsgId.MsgA, 100);
-        MessageCenter.PostMessage(MsgId.MsgB, true, 1);     // 报回调函数参数不匹配错误
-        MessageCenter.PostMessage(MsgId.MsgB, 1.2f, "abc");
+        MessageCenter.PostMessage(MsgTypeVar.MsgA, 100);
+        //MessageCenter.PostMessage(MsgTypeVar.MsgB, true, 1);      // 编译错误
+        MessageCenter.PostMessage(MsgTypeVar.MsgB, 1.2f, "abc");
 
         yield return new WaitForSeconds(3.01f);
         Debug.Log("反注册 OnMsgA");
-        MessageCenter.UnRegister<int>(MsgId.MsgA, OnMsgA);
-        MessageCenter.PostMessage(MsgId.MsgA, 999);         // 不会再执行
-        MessageCenter.SendMessage(MsgId.MsgB, 246f, "大好き");
+        MessageCenter.UnRegister(MsgTypeVar.MsgA, OnMsgA);
+        MessageCenter.PostMessage(MsgTypeVar.MsgA, 999);            // 不会再执行
+        MessageCenter.SendMessage(MsgTypeVar.MsgB, 246f, "大好き");
         yield return new WaitForSeconds(1.2f);
 
         Debug.LogFormat("移除对象 {0} 的所有回调", this.name);
         MessageCenter.UnRegisterOfObj(this);
         // 以下都不会执行
-        MessageCenter.SendMessage(MsgId.MsgA, 666);
-        MessageCenter.SendMessage(MsgId.MsgB, 2f, "Misaka");
+        MessageCenter.SendMessage(MsgTypeVar.MsgA, 666);
+        MessageCenter.SendMessage(MsgTypeVar.MsgB, 2f, "Misaka");
 
-        MessageCenter.SendMessage(MsgId.MsgA, 123);
-        MessageCenter.SendMessage(MsgId.MsgB, 5f, "Mikoto");
+        MessageCenter.SendMessage(MsgTypeVar.MsgA, 123);
+        MessageCenter.SendMessage(MsgTypeVar.MsgB, 5f, "Mikoto");
     }
 
     /// <summary>

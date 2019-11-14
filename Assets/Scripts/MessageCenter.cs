@@ -48,70 +48,175 @@ public class MessageCenter
     private static Queue<IMsgInvoker> s_queueInvokers = new Queue<IMsgInvoker>();
 
 
-    static MessageCenter()
-    {
-        MsgTypeBinder.BindTypes();
-    }
-
     public static void BindType(MsgId msgId, Type cbType)
     {
         s_dicCallbacks.Add(msgId, new CallbackInfo() { msgId = msgId, cbType = cbType });
     }
 
     #region Register
-    public static void Register(MsgId msgId, Action callback)
+    /// <summary>
+    /// 注册消息回调，msgType 定义在 MsgTypeVar 内
+    /// </summary>
+    /// <param name="msgType"></param>
+    /// <param name="callback"></param>
+    public static void Register(MsgType msgType, Action callback)
     {
-        RegisterInternal(msgId, callback, typeof(Action));
+        RegisterInternal(msgType.msgId, callback, typeof(Action));
     }
 
-    public static void Register<T1>(MsgId msgId, Action<T1> callback)
+    /// <summary>
+    /// 注册消息回调，msgType 定义在 MsgTypeVar 内
+    /// </summary>
+    /// <typeparam name="T1"></typeparam>
+    /// <param name="msgType"></param>
+    /// <param name="callback"></param>
+    public static void Register<T1>(MsgType<T1> msgType, Action<T1> callback)
     {
-        RegisterInternal(msgId, callback, typeof(Action<T1>));
+        RegisterInternal(msgType.msgId, callback, typeof(Action<T1>));
     }
 
-    public static void Register<T1, T2>(MsgId msgId, Action<T1, T2> callback)
+    /// <summary>
+    /// 注册消息回调，msgType 定义在 MsgTypeVar 内
+    /// </summary>
+    /// <typeparam name="T1"></typeparam>
+    /// <typeparam name="T2"></typeparam>
+    /// <param name="msgType"></param>
+    /// <param name="callback"></param>
+    public static void Register<T1, T2>(MsgType<T1, T2> msgType, Action<T1, T2> callback)
     {
-        RegisterInternal(msgId, callback, typeof(Action<T1, T2>));
+        RegisterInternal(msgType.msgId, callback, typeof(Action<T1, T2>));
     }
 
-    public static void Register<T1, T2, T3>(MsgId msgId, Action<T1, T2, T3> callback)
+    /// <summary>
+    /// 注册消息回调，msgType 定义在 MsgTypeVar 内
+    /// </summary>
+    /// <typeparam name="T1"></typeparam>
+    /// <typeparam name="T2"></typeparam>
+    /// <typeparam name="T3"></typeparam>
+    /// <param name="msgType"></param>
+    /// <param name="callback"></param>
+    public static void Register<T1, T2, T3>(MsgType<T1, T2, T3> msgType, Action<T1, T2, T3> callback)
     {
-        RegisterInternal(msgId, callback, typeof(Action<T1, T2, T3>));
+        RegisterInternal(msgType.msgId, callback, typeof(Action<T1, T2, T3>));
     }
 
-    public static void Register<T1, T2, T3, T4>(MsgId msgId, Action<T1, T2, T3, T4> callback)
+    /// <summary>
+    /// 注册消息回调，msgType 定义在 MsgTypeVar 内
+    /// </summary>
+    /// <typeparam name="T1"></typeparam>
+    /// <typeparam name="T2"></typeparam>
+    /// <typeparam name="T3"></typeparam>
+    /// <typeparam name="T4"></typeparam>
+    /// <param name="msgType"></param>
+    /// <param name="callback"></param>
+    public static void Register<T1, T2, T3, T4>(MsgType<T1, T2, T3, T4> msgType, Action<T1, T2, T3, T4> callback)
     {
-        RegisterInternal(msgId, callback, typeof(Action<T1, T2, T3, T4>));
+        RegisterInternal(msgType.msgId, callback, typeof(Action<T1, T2, T3, T4>));
     }
 
-    public static void Register<T1, T2, T3, T4, T5>(MsgId msgId, Action<T1, T2, T3, T4, T5> callback)
+    /// <summary>
+    /// 注册消息回调，msgType 定义在 MsgTypeVar 内
+    /// </summary>
+    /// <typeparam name="T1"></typeparam>
+    /// <typeparam name="T2"></typeparam>
+    /// <typeparam name="T3"></typeparam>
+    /// <typeparam name="T4"></typeparam>
+    /// <typeparam name="T5"></typeparam>
+    /// <param name="msgType"></param>
+    /// <param name="callback"></param>
+    public static void Register<T1, T2, T3, T4, T5>(MsgType<T1, T2, T3, T4, T5> msgType, Action<T1, T2, T3, T4, T5> callback)
     {
-        RegisterInternal(msgId, callback, typeof(Action<T1, T2, T3, T4, T5>));
+        RegisterInternal(msgType.msgId, callback, typeof(Action<T1, T2, T3, T4, T5>));
     }
 
-    public static void Register<T1, T2, T3, T4, T5, T6>(MsgId msgId, Action<T1, T2, T3, T4, T5, T6> callback)
+    /// <summary>
+    /// 注册消息回调，msgType 定义在 MsgTypeVar 内
+    /// </summary>
+    /// <typeparam name="T1"></typeparam>
+    /// <typeparam name="T2"></typeparam>
+    /// <typeparam name="T3"></typeparam>
+    /// <typeparam name="T4"></typeparam>
+    /// <typeparam name="T5"></typeparam>
+    /// <typeparam name="T6"></typeparam>
+    /// <param name="msgType"></param>
+    /// <param name="callback"></param>
+    public static void Register<T1, T2, T3, T4, T5, T6>(MsgType<T1, T2, T3, T4, T5, T6> msgType, Action<T1, T2, T3, T4, T5, T6> callback)
     {
-        RegisterInternal(msgId, callback, typeof(Action<T1, T2, T3, T4, T5, T6>));
+        RegisterInternal(msgType.msgId, callback, typeof(Action<T1, T2, T3, T4, T5, T6>));
     }
 
-    public static void Register<T1, T2, T3, T4, T5, T6, T7>(MsgId msgId, Action<T1, T2, T3, T4, T5, T6, T7> callback)
+    /// <summary>
+    /// 注册消息回调，msgType 定义在 MsgTypeVar 内
+    /// </summary>
+    /// <typeparam name="T1"></typeparam>
+    /// <typeparam name="T2"></typeparam>
+    /// <typeparam name="T3"></typeparam>
+    /// <typeparam name="T4"></typeparam>
+    /// <typeparam name="T5"></typeparam>
+    /// <typeparam name="T6"></typeparam>
+    /// <typeparam name="T7"></typeparam>
+    /// <param name="msgType"></param>
+    /// <param name="callback"></param>
+    public static void Register<T1, T2, T3, T4, T5, T6, T7>(MsgType<T1, T2, T3, T4, T5, T6, T7> msgType, Action<T1, T2, T3, T4, T5, T6, T7> callback)
     {
-        RegisterInternal(msgId, callback, typeof(Action<T1, T2, T3, T4, T5, T6, T7>));
+        RegisterInternal(msgType.msgId, callback, typeof(Action<T1, T2, T3, T4, T5, T6, T7>));
     }
 
-    public static void Register<T1, T2, T3, T4, T5, T6, T7, T8>(MsgId msgId, Action<T1, T2, T3, T4, T5, T6, T7, T8> callback)
+    /// <summary>
+    /// 注册消息回调，msgType 定义在 MsgTypeVar 内
+    /// </summary>
+    /// <typeparam name="T1"></typeparam>
+    /// <typeparam name="T2"></typeparam>
+    /// <typeparam name="T3"></typeparam>
+    /// <typeparam name="T4"></typeparam>
+    /// <typeparam name="T5"></typeparam>
+    /// <typeparam name="T6"></typeparam>
+    /// <typeparam name="T7"></typeparam>
+    /// <typeparam name="T8"></typeparam>
+    /// <param name="msgType"></param>
+    /// <param name="callback"></param>
+    public static void Register<T1, T2, T3, T4, T5, T6, T7, T8>(MsgType<T1, T2, T3, T4, T5, T6, T7, T8> msgType, Action<T1, T2, T3, T4, T5, T6, T7, T8> callback)
     {
-        RegisterInternal(msgId, callback, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8>));
+        RegisterInternal(msgType.msgId, callback, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8>));
     }
 
-    public static void Register<T1, T2, T3, T4, T5, T6, T7, T8, T9>(MsgId msgId, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9> callback)
+    /// <summary>
+    /// 注册消息回调，msgType 定义在 MsgTypeVar 内
+    /// </summary>
+    /// <typeparam name="T1"></typeparam>
+    /// <typeparam name="T2"></typeparam>
+    /// <typeparam name="T3"></typeparam>
+    /// <typeparam name="T4"></typeparam>
+    /// <typeparam name="T5"></typeparam>
+    /// <typeparam name="T6"></typeparam>
+    /// <typeparam name="T7"></typeparam>
+    /// <typeparam name="T8"></typeparam>
+    /// <typeparam name="T9"></typeparam>
+    /// <param name="msgType"></param>
+    /// <param name="callback"></param>
+    public static void Register<T1, T2, T3, T4, T5, T6, T7, T8, T9>(MsgType<T1, T2, T3, T4, T5, T6, T7, T8, T9> msgType, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9> callback)
     {
-        RegisterInternal(msgId, callback, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>));
+        RegisterInternal(msgType.msgId, callback, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>));
     }
 
-    public static void Register<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(MsgId msgId, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> callback)
+    /// <summary>
+    /// 注册消息回调，msgType 定义在 MsgTypeVar 内
+    /// </summary>
+    /// <typeparam name="T1"></typeparam>
+    /// <typeparam name="T2"></typeparam>
+    /// <typeparam name="T3"></typeparam>
+    /// <typeparam name="T4"></typeparam>
+    /// <typeparam name="T5"></typeparam>
+    /// <typeparam name="T6"></typeparam>
+    /// <typeparam name="T7"></typeparam>
+    /// <typeparam name="T8"></typeparam>
+    /// <typeparam name="T9"></typeparam>
+    /// <typeparam name="T10"></typeparam>
+    /// <param name="msgType"></param>
+    /// <param name="callback"></param>
+    public static void Register<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(MsgType<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> msgType, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> callback)
     {
-        RegisterInternal(msgId, callback, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>));
+        RegisterInternal(msgType.msgId, callback, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>));
     }
 
     /// <summary>
@@ -210,59 +315,59 @@ public class MessageCenter
         }
     }
 
-    public static void UnRegister(MsgId msgId, Action callback)
+    public static void UnRegister(MsgType msgType, Action callback)
     {
-        UnRegisterInternal(msgId, callback);
+        UnRegisterInternal(msgType.msgId, callback);
     }
 
-    public static void UnRegister<T1>(MsgId msgId, Action<T1> callback)
+    public static void UnRegister<T1>(MsgType<T1> msgType, Action<T1> callback)
     {
-        UnRegisterInternal(msgId, callback);
+        UnRegisterInternal(msgType.msgId, callback);
     }
 
-    public static void UnRegister<T1, T2>(MsgId msgId, Action<T1, T2> callback)
+    public static void UnRegister<T1, T2>(MsgType<T1, T2> msgType, Action<T1, T2> callback)
     {
-        UnRegisterInternal(msgId, callback);
+        UnRegisterInternal(msgType.msgId, callback);
     }
 
-    public static void UnRegister<T1, T2, T3>(MsgId msgId, Action<T1, T2, T3> callback)
+    public static void UnRegister<T1, T2, T3>(MsgType<T1, T2, T3> msgType, Action<T1, T2, T3> callback)
     {
-        UnRegisterInternal(msgId, callback);
+        UnRegisterInternal(msgType.msgId, callback);
     }
 
-    public static void UnRegister<T1, T2, T3, T4>(MsgId msgId, Action<T1, T2, T3, T4> callback)
+    public static void UnRegister<T1, T2, T3, T4>(MsgType<T1, T2, T3, T4> msgType, Action<T1, T2, T3, T4> callback)
     {
-        UnRegisterInternal(msgId, callback);
+        UnRegisterInternal(msgType.msgId, callback);
     }
 
-    public static void UnRegister<T1, T2, T3, T4, T5>(MsgId msgId, Action<T1, T2, T3, T4, T5> callback)
+    public static void UnRegister<T1, T2, T3, T4, T5>(MsgType<T1, T2, T3, T4, T5> msgType, Action<T1, T2, T3, T4, T5> callback)
     {
-        UnRegisterInternal(msgId, callback);
+        UnRegisterInternal(msgType.msgId, callback);
     }
 
-    public static void UnRegister<T1, T2, T3, T4, T5, T6>(MsgId msgId, Action<T1, T2, T3, T4, T5, T6> callback)
+    public static void UnRegister<T1, T2, T3, T4, T5, T6>(MsgType<T1, T2, T3, T4, T5, T6> msgType, Action<T1, T2, T3, T4, T5, T6> callback)
     {
-        UnRegisterInternal(msgId, callback);
+        UnRegisterInternal(msgType.msgId, callback);
     }
 
-    public static void UnRegister<T1, T2, T3, T4, T5, T6, T7>(MsgId msgId, Action<T1, T2, T3, T4, T5, T6, T7> callback)
+    public static void UnRegister<T1, T2, T3, T4, T5, T6, T7>(MsgType<T1, T2, T3, T4, T5, T6, T7> msgType, Action<T1, T2, T3, T4, T5, T6, T7> callback)
     {
-        UnRegisterInternal(msgId, callback);
+        UnRegisterInternal(msgType.msgId, callback);
     }
 
-    public static void UnRegister<T1, T2, T3, T4, T5, T6, T7, T8>(MsgId msgId, Action<T1, T2, T3, T4, T5, T6, T7, T8> callback)
+    public static void UnRegister<T1, T2, T3, T4, T5, T6, T7, T8>(MsgType<T1, T2, T3, T4, T5, T6, T7, T8> msgType, Action<T1, T2, T3, T4, T5, T6, T7, T8> callback)
     {
-        UnRegisterInternal(msgId, callback);
+        UnRegisterInternal(msgType.msgId, callback);
     }
 
-    public static void UnRegister<T1, T2, T3, T4, T5, T6, T7, T8, T9>(MsgId msgId, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9> callback)
+    public static void UnRegister<T1, T2, T3, T4, T5, T6, T7, T8, T9>(MsgType<T1, T2, T3, T4, T5, T6, T7, T8, T9> msgType, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9> callback)
     {
-        UnRegisterInternal(msgId, callback);
+        UnRegisterInternal(msgType.msgId, callback);
     }
 
-    public static void UnRegister<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(MsgId msgId, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> callback)
+    public static void UnRegister<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(MsgType<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> msgType, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> callback)
     {
-        UnRegisterInternal(msgId, callback);
+        UnRegisterInternal(msgType.msgId, callback);
     }
 
 
@@ -308,9 +413,9 @@ public class MessageCenter
 
 
     #region SendMessage
-    public static void SendMessage(MsgId msgId)
+    public static void SendMessage(MsgType msgType)
     {
-        List<Delegate> lst = FindCbList(msgId, typeof(Action));
+        List<Delegate> lst = FindCbList(msgType.msgId, typeof(Action));
         if (lst == null)
             return;
 
@@ -327,9 +432,9 @@ public class MessageCenter
         }
     }
 
-    public static void SendMessage<T>(MsgId msgId, T data)
+    public static void SendMessage<T1>(MsgType<T1> msgType, T1 data)
     {
-        List<Delegate> lst = FindCbList(msgId, typeof(Action<T>));
+        List<Delegate> lst = FindCbList(msgType.msgId, typeof(Action<T1>));
         if (lst == null)
             return;
 
@@ -337,7 +442,7 @@ public class MessageCenter
         {
             try
             {
-                (lst[i] as Action<T>)(data);
+                (lst[i] as Action<T1>)(data);
             }
             catch (Exception ex)
             {
@@ -346,9 +451,9 @@ public class MessageCenter
         }
     }
 
-    public static void SendMessage<T1, T2>(MsgId msgId, T1 data1, T2 data2)
+    public static void SendMessage<T1, T2>(MsgType<T1, T2> msgType, T1 data1, T2 data2)
     {
-        List<Delegate> lst = FindCbList(msgId, typeof(Action<T1, T2>));
+        List<Delegate> lst = FindCbList(msgType.msgId, typeof(Action<T1, T2>));
         if (lst == null)
             return;
 
@@ -365,9 +470,9 @@ public class MessageCenter
         }
     }
 
-    public static void SendMessage<T1, T2, T3>(MsgId msgId, T1 data1, T2 data2, T3 data3)
+    public static void SendMessage<T1, T2, T3>(MsgType<T1, T2, T3> msgType, T1 data1, T2 data2, T3 data3)
     {
-        List<Delegate> lst = FindCbList(msgId, typeof(Action<T1, T2, T3>));
+        List<Delegate> lst = FindCbList(msgType.msgId, typeof(Action<T1, T2, T3>));
         if (lst == null)
             return;
 
@@ -384,9 +489,9 @@ public class MessageCenter
         }
     }
 
-    public static void SendMessage<T1, T2, T3, T4>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4)
+    public static void SendMessage<T1, T2, T3, T4>(MsgType<T1, T2, T3, T4> msgType, T1 data1, T2 data2, T3 data3, T4 data4)
     {
-        List<Delegate> lst = FindCbList(msgId, typeof(Action<T1, T2, T3, T4>));
+        List<Delegate> lst = FindCbList(msgType.msgId, typeof(Action<T1, T2, T3, T4>));
         if (lst == null)
             return;
 
@@ -403,9 +508,9 @@ public class MessageCenter
         }
     }
 
-    public static void SendMessage<T1, T2, T3, T4, T5>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5)
+    public static void SendMessage<T1, T2, T3, T4, T5>(MsgType<T1, T2, T3, T4, T5> msgType, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5)
     {
-        List<Delegate> lst = FindCbList(msgId, typeof(Action<T1, T2, T3, T4, T5>));
+        List<Delegate> lst = FindCbList(msgType.msgId, typeof(Action<T1, T2, T3, T4, T5>));
         if (lst == null)
             return;
 
@@ -422,9 +527,9 @@ public class MessageCenter
         }
     }
 
-    public static void SendMessage<T1, T2, T3, T4, T5, T6>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6)
+    public static void SendMessage<T1, T2, T3, T4, T5, T6>(MsgType<T1, T2, T3, T4, T5, T6> msgType, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6)
     {
-        List<Delegate> lst = FindCbList(msgId, typeof(Action<T1, T2, T3, T4, T5, T6>));
+        List<Delegate> lst = FindCbList(msgType.msgId, typeof(Action<T1, T2, T3, T4, T5, T6>));
         if (lst == null)
             return;
 
@@ -441,9 +546,9 @@ public class MessageCenter
         }
     }
 
-    public static void SendMessage<T1, T2, T3, T4, T5, T6, T7>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7)
+    public static void SendMessage<T1, T2, T3, T4, T5, T6, T7>(MsgType<T1, T2, T3, T4, T5, T6, T7> msgType, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7)
     {
-        List<Delegate> lst = FindCbList(msgId, typeof(Action<T1, T2, T3, T4, T5, T6, T7>));
+        List<Delegate> lst = FindCbList(msgType.msgId, typeof(Action<T1, T2, T3, T4, T5, T6, T7>));
         if (lst == null)
             return;
 
@@ -460,9 +565,9 @@ public class MessageCenter
         }
     }
 
-    public static void SendMessage<T1, T2, T3, T4, T5, T6, T7, T8>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7, T8 data8)
+    public static void SendMessage<T1, T2, T3, T4, T5, T6, T7, T8>(MsgType<T1, T2, T3, T4, T5, T6, T7, T8> msgType, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7, T8 data8)
     {
-        List<Delegate> lst = FindCbList(msgId, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8>));
+        List<Delegate> lst = FindCbList(msgType.msgId, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8>));
         if (lst == null)
             return;
 
@@ -479,9 +584,9 @@ public class MessageCenter
         }
     }
 
-    public static void SendMessage<T1, T2, T3, T4, T5, T6, T7, T8, T9>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7, T8 data8, T9 data9)
+    public static void SendMessage<T1, T2, T3, T4, T5, T6, T7, T8, T9>(MsgType<T1, T2, T3, T4, T5, T6, T7, T8, T9> msgType, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7, T8 data8, T9 data9)
     {
-        List<Delegate> lst = FindCbList(msgId, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>));
+        List<Delegate> lst = FindCbList(msgType.msgId, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>));
         if (lst == null)
             return;
 
@@ -498,9 +603,9 @@ public class MessageCenter
         }
     }
 
-    public static void SendMessage<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7, T8 data8, T9 data9, T10 data10)
+    public static void SendMessage<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(MsgType<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> msgType, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7, T8 data8, T9 data9, T10 data10)
     {
-        List<Delegate> lst = FindCbList(msgId, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>));
+        List<Delegate> lst = FindCbList(msgType.msgId, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>));
         if (lst == null)
             return;
 
@@ -523,99 +628,99 @@ public class MessageCenter
     /// 发送异步执行的消息
     /// </summary>
     /// <param name="msgId"></param>
-    public static void PostMessage(MsgId msgId)
+    public static void PostMessage(MsgType msgType)
     {
-        CallbackInfo cbInfo = FindCallbackInfo(msgId, typeof(Action));
+        CallbackInfo cbInfo = FindCallbackInfo(msgType.msgId, typeof(Action));
         if (cbInfo.cbType == null)
             return;
 
         s_queueInvokers.Enqueue(new MsgInvoker(cbInfo)); // TODO 如果调用PostMessage非常频繁考虑对MsgInvoker进行缓存
     }
 
-    public static void PostMessage<T1>(MsgId msgId, T1 data1)
+    public static void PostMessage<T1>(MsgType<T1> msgType, T1 data1)
     {
-        CallbackInfo cbInfo = FindCallbackInfo(msgId, typeof(Action<T1>));
+        CallbackInfo cbInfo = FindCallbackInfo(msgType.msgId, typeof(Action<T1>));
         if (cbInfo.cbType == null)
             return;
 
         s_queueInvokers.Enqueue(new MsgInvoker<T1>(cbInfo, data1));
     }
 
-    public static void PostMessage<T1, T2>(MsgId msgId, T1 data1, T2 data2)
+    public static void PostMessage<T1, T2>(MsgType<T1, T2> msgType, T1 data1, T2 data2)
     {
-        CallbackInfo cbInfo = FindCallbackInfo(msgId, typeof(Action<T1, T2>));
+        CallbackInfo cbInfo = FindCallbackInfo(msgType.msgId, typeof(Action<T1, T2>));
         if (cbInfo.cbType == null)
             return;
 
         s_queueInvokers.Enqueue(new MsgInvoker<T1, T2>(cbInfo, data1, data2));
     }
 
-    public static void PostMessage<T1, T2, T3>(MsgId msgId, T1 data1, T2 data2, T3 data3)
+    public static void PostMessage<T1, T2, T3>(MsgType<T1, T2, T3> msgType, T1 data1, T2 data2, T3 data3)
     {
-        CallbackInfo cbInfo = FindCallbackInfo(msgId, typeof(Action<T1, T2, T3>));
+        CallbackInfo cbInfo = FindCallbackInfo(msgType.msgId, typeof(Action<T1, T2, T3>));
         if (cbInfo.cbType == null)
             return;
 
         s_queueInvokers.Enqueue(new MsgInvoker<T1, T2, T3>(cbInfo, data1, data2, data3));
     }
 
-    public static void PostMessage<T1, T2, T3, T4>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4)
+    public static void PostMessage<T1, T2, T3, T4>(MsgType<T1, T2, T3, T4> msgType, T1 data1, T2 data2, T3 data3, T4 data4)
     {
-        CallbackInfo cbInfo = FindCallbackInfo(msgId, typeof(Action<T1, T2, T3, T4>));
+        CallbackInfo cbInfo = FindCallbackInfo(msgType.msgId, typeof(Action<T1, T2, T3, T4>));
         if (cbInfo.cbType == null)
             return;
 
         s_queueInvokers.Enqueue(new MsgInvoker<T1, T2, T3, T4>(cbInfo, data1, data2, data3, data4));
     }
 
-    public static void PostMessage<T1, T2, T3, T4, T5>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5)
+    public static void PostMessage<T1, T2, T3, T4, T5>(MsgType<T1, T2, T3, T4, T5> msgType, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5)
     {
-        CallbackInfo cbInfo = FindCallbackInfo(msgId, typeof(Action<T1, T2, T3, T4, T5>));
+        CallbackInfo cbInfo = FindCallbackInfo(msgType.msgId, typeof(Action<T1, T2, T3, T4, T5>));
         if (cbInfo.cbType == null)
             return;
 
         s_queueInvokers.Enqueue(new MsgInvoker<T1, T2, T3, T4, T5>(cbInfo, data1, data2, data3, data4, data5));
     }
 
-    public static void PostMessage<T1, T2, T3, T4, T5, T6>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6)
+    public static void PostMessage<T1, T2, T3, T4, T5, T6>(MsgType<T1, T2, T3, T4, T5, T6> msgType, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6)
     {
-        CallbackInfo cbInfo = FindCallbackInfo(msgId, typeof(Action<T1, T2, T3, T4, T5, T6>));
+        CallbackInfo cbInfo = FindCallbackInfo(msgType.msgId, typeof(Action<T1, T2, T3, T4, T5, T6>));
         if (cbInfo.cbType == null)
             return;
 
         s_queueInvokers.Enqueue(new MsgInvoker<T1, T2, T3, T4, T5, T6>(cbInfo, data1, data2, data3, data4, data5, data6));
     }
 
-    public static void PostMessage<T1, T2, T3, T4, T5, T6, T7>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7)
+    public static void PostMessage<T1, T2, T3, T4, T5, T6, T7>(MsgType<T1, T2, T3, T4, T5, T6, T7> msgType, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7)
     {
-        CallbackInfo cbInfo = FindCallbackInfo(msgId, typeof(Action<T1, T2, T3, T4, T5, T6, T7>));
+        CallbackInfo cbInfo = FindCallbackInfo(msgType.msgId, typeof(Action<T1, T2, T3, T4, T5, T6, T7>));
         if (cbInfo.cbType == null)
             return;
 
         s_queueInvokers.Enqueue(new MsgInvoker<T1, T2, T3, T4, T5, T6, T7>(cbInfo, data1, data2, data3, data4, data5, data6, data7));
     }
 
-    public static void PostMessage<T1, T2, T3, T4, T5, T6, T7, T8>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7, T8 data8)
+    public static void PostMessage<T1, T2, T3, T4, T5, T6, T7, T8>(MsgType<T1, T2, T3, T4, T5, T6, T7, T8> msgType, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7, T8 data8)
     {
-        CallbackInfo cbInfo = FindCallbackInfo(msgId, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8>));
+        CallbackInfo cbInfo = FindCallbackInfo(msgType.msgId, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8>));
         if (cbInfo.cbType == null)
             return;
 
         s_queueInvokers.Enqueue(new MsgInvoker<T1, T2, T3, T4, T5, T6, T7, T8>(cbInfo, data1, data2, data3, data4, data5, data6, data7, data8));
     }
 
-    public static void PostMessage<T1, T2, T3, T4, T5, T6, T7, T8, T9>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7, T8 data8, T9 data9)
+    public static void PostMessage<T1, T2, T3, T4, T5, T6, T7, T8, T9>(MsgType<T1, T2, T3, T4, T5, T6, T7, T8, T9> msgType, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7, T8 data8, T9 data9)
     {
-        CallbackInfo cbInfo = FindCallbackInfo(msgId, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>));
+        CallbackInfo cbInfo = FindCallbackInfo(msgType.msgId, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>));
         if (cbInfo.cbType == null)
             return;
 
         s_queueInvokers.Enqueue(new MsgInvoker<T1, T2, T3, T4, T5, T6, T7, T8, T9>(cbInfo, data1, data2, data3, data4, data5, data6, data7, data8, data9));
     }
 
-    public static void PostMessage<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7, T8 data8, T9 data9, T10 data10)
+    public static void PostMessage<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(MsgType<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> msgType, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7, T8 data8, T9 data9, T10 data10)
     {
-        CallbackInfo cbInfo = FindCallbackInfo(msgId, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>));
+        CallbackInfo cbInfo = FindCallbackInfo(msgType.msgId, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>));
         if (cbInfo.cbType == null)
             return;
 

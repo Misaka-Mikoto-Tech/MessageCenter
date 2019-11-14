@@ -6,14 +6,13 @@
  * 使用方式：
  *  1. 在 MsgDef 中定义消息枚举和回调函数类型
  *  2. 使用 Register 注册回调
- *  3. SendMsg 派发消息
+ *  3. SendMessage/PostMessage 派发消息
  */
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Nito.Collections;
 
 
 /// <summary>
@@ -46,7 +45,7 @@ public class MessageCenter
     /// <summary>
     /// PostMessage 执行后缓存的执行器，用于延迟执行
     /// </summary>
-    private static Deque<IMsgInvoker> s_dequeInvokers = new Deque<IMsgInvoker>();
+    private static Queue<IMsgInvoker> s_queueInvokers = new Queue<IMsgInvoker>();
 
 
     static MessageCenter()
@@ -312,18 +311,18 @@ public class MessageCenter
     public static void SendMessage(MsgId msgId)
     {
         List<Delegate> lst = FindCbList(msgId, typeof(Action));
-        if (lst != null && lst.Count > 0)
+        if (lst == null)
+            return;
+
+        for (int i = 0, imax = lst.Count; i < imax; i++)
         {
-            foreach (var callback in lst)
+            try
             {
-                try
-                {
-                    (callback as Action)();
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
-                }
+                (lst[i] as Action)();
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
             }
         }
     }
@@ -331,18 +330,18 @@ public class MessageCenter
     public static void SendMessage<T>(MsgId msgId, T data)
     {
         List<Delegate> lst = FindCbList(msgId, typeof(Action<T>));
-        if (lst != null && lst.Count > 0)
+        if (lst == null)
+            return;
+
+        for (int i = 0, imax = lst.Count; i < imax; i++)
         {
-            foreach (var callback in lst)
+            try
             {
-                try
-                {
-                    (callback as Action<T>)(data);
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
-                }
+                (lst[i] as Action<T>)(data);
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
             }
         }
     }
@@ -350,18 +349,18 @@ public class MessageCenter
     public static void SendMessage<T1, T2>(MsgId msgId, T1 data1, T2 data2)
     {
         List<Delegate> lst = FindCbList(msgId, typeof(Action<T1, T2>));
-        if (lst != null && lst.Count > 0)
+        if (lst == null)
+            return;
+
+        for (int i = 0, imax = lst.Count; i < imax; i++)
         {
-            foreach (var callback in lst)
+            try
             {
-                try
-                {
-                    (callback as Action<T1, T2>)(data1, data2);
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
-                }
+                (lst[i] as Action<T1, T2>)(data1, data2);
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
             }
         }
     }
@@ -369,18 +368,18 @@ public class MessageCenter
     public static void SendMessage<T1, T2, T3>(MsgId msgId, T1 data1, T2 data2, T3 data3)
     {
         List<Delegate> lst = FindCbList(msgId, typeof(Action<T1, T2, T3>));
-        if (lst != null && lst.Count > 0)
+        if (lst == null)
+            return;
+
+        for (int i = 0, imax = lst.Count; i < imax; i++)
         {
-            foreach (var callback in lst)
+            try
             {
-                try
-                {
-                    (callback as Action<T1, T2, T3>)(data1, data2, data3);
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
-                }
+                (lst[i] as Action<T1, T2, T3>)(data1, data2, data3);
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
             }
         }
     }
@@ -388,18 +387,18 @@ public class MessageCenter
     public static void SendMessage<T1, T2, T3, T4>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4)
     {
         List<Delegate> lst = FindCbList(msgId, typeof(Action<T1, T2, T3, T4>));
-        if (lst != null && lst.Count > 0)
+        if (lst == null)
+            return;
+
+        for (int i = 0, imax = lst.Count; i < imax; i++)
         {
-            foreach (var callback in lst)
+            try
             {
-                try
-                {
-                    (callback as Action<T1, T2, T3, T4>)(data1, data2, data3, data4);
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
-                }
+                (lst[i] as Action<T1, T2, T3, T4>)(data1, data2, data3, data4);
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
             }
         }
     }
@@ -407,18 +406,18 @@ public class MessageCenter
     public static void SendMessage<T1, T2, T3, T4, T5>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5)
     {
         List<Delegate> lst = FindCbList(msgId, typeof(Action<T1, T2, T3, T4, T5>));
-        if (lst != null && lst.Count > 0)
+        if (lst == null)
+            return;
+
+        for (int i = 0, imax = lst.Count; i < imax; i++)
         {
-            foreach (var callback in lst)
+            try
             {
-                try
-                {
-                    (callback as Action<T1, T2, T3, T4, T5>)(data1, data2, data3, data4, data5);
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
-                }
+                (lst[i] as Action<T1, T2, T3, T4, T5>)(data1, data2, data3, data4, data5);
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
             }
         }
     }
@@ -426,18 +425,18 @@ public class MessageCenter
     public static void SendMessage<T1, T2, T3, T4, T5, T6>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6)
     {
         List<Delegate> lst = FindCbList(msgId, typeof(Action<T1, T2, T3, T4, T5, T6>));
-        if (lst != null && lst.Count > 0)
+        if (lst == null)
+            return;
+
+        for (int i = 0, imax = lst.Count; i < imax; i++)
         {
-            foreach (var callback in lst)
+            try
             {
-                try
-                {
-                    (callback as Action<T1, T2, T3, T4, T5, T6>)(data1, data2, data3, data4, data5, data6);
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
-                }
+                (lst[i] as Action<T1, T2, T3, T4, T5, T6>)(data1, data2, data3, data4, data5, data6);
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
             }
         }
     }
@@ -445,18 +444,18 @@ public class MessageCenter
     public static void SendMessage<T1, T2, T3, T4, T5, T6, T7>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7)
     {
         List<Delegate> lst = FindCbList(msgId, typeof(Action<T1, T2, T3, T4, T5, T6, T7>));
-        if (lst != null && lst.Count > 0)
+        if (lst == null)
+            return;
+
+        for (int i = 0, imax = lst.Count; i < imax; i++)
         {
-            foreach (var callback in lst)
+            try
             {
-                try
-                {
-                    (callback as Action<T1, T2, T3, T4, T5, T6, T7>)(data1, data2, data3, data4, data5, data6, data7);
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
-                }
+                (lst[i] as Action<T1, T2, T3, T4, T5, T6, T7>)(data1, data2, data3, data4, data5, data6, data7);
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
             }
         }
     }
@@ -464,18 +463,18 @@ public class MessageCenter
     public static void SendMessage<T1, T2, T3, T4, T5, T6, T7, T8>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7, T8 data8)
     {
         List<Delegate> lst = FindCbList(msgId, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8>));
-        if (lst != null && lst.Count > 0)
+        if (lst == null)
+            return;
+
+        for (int i = 0, imax = lst.Count; i < imax; i++)
         {
-            foreach (var callback in lst)
+            try
             {
-                try
-                {
-                    (callback as Action<T1, T2, T3, T4, T5, T6, T7, T8>)(data1, data2, data3, data4, data5, data6, data7, data8);
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
-                }
+                (lst[i] as Action<T1, T2, T3, T4, T5, T6, T7, T8>)(data1, data2, data3, data4, data5, data6, data7, data8);
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
             }
         }
     }
@@ -483,18 +482,18 @@ public class MessageCenter
     public static void SendMessage<T1, T2, T3, T4, T5, T6, T7, T8, T9>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7, T8 data8, T9 data9)
     {
         List<Delegate> lst = FindCbList(msgId, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>));
-        if (lst != null && lst.Count > 0)
+        if (lst == null)
+            return;
+
+        for (int i = 0, imax = lst.Count; i < imax; i++)
         {
-            foreach (var callback in lst)
+            try
             {
-                try
-                {
-                    (callback as Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>)(data1, data2, data3, data4, data5, data6, data7, data8, data9);
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
-                }
+                (lst[i] as Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>)(data1, data2, data3, data4, data5, data6, data7, data8, data9);
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
             }
         }
     }
@@ -502,18 +501,18 @@ public class MessageCenter
     public static void SendMessage<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7, T8 data8, T9 data9, T10 data10)
     {
         List<Delegate> lst = FindCbList(msgId, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>));
-        if (lst != null && lst.Count > 0)
+        if (lst == null)
+            return;
+
+        for (int i = 0, imax = lst.Count; i < imax; i++)
         {
-            foreach (var callback in lst)
+            try
             {
-                try
-                {
-                    (callback as Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>)(data1, data2, data3, data4, data5, data6, data7, data8, data9, data10);
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
-                }
+                (lst[i] as Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>)(data1, data2, data3, data4, data5, data6, data7, data8, data9, data10);
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
             }
         }
     }
@@ -530,7 +529,7 @@ public class MessageCenter
         if (cbInfo.cbType == null)
             return;
 
-        s_dequeInvokers.AddToBack(new MsgInvoker(cbInfo)); // TODO 如果调用PostMessage非常频繁考虑对MsgInvoker进行缓存
+        s_queueInvokers.Enqueue(new MsgInvoker(cbInfo)); // TODO 如果调用PostMessage非常频繁考虑对MsgInvoker进行缓存
     }
 
     public static void PostMessage<T1>(MsgId msgId, T1 data1)
@@ -539,7 +538,7 @@ public class MessageCenter
         if (cbInfo.cbType == null)
             return;
 
-        s_dequeInvokers.AddToBack(new MsgInvoker<T1>(cbInfo, data1));
+        s_queueInvokers.Enqueue(new MsgInvoker<T1>(cbInfo, data1));
     }
 
     public static void PostMessage<T1, T2>(MsgId msgId, T1 data1, T2 data2)
@@ -548,7 +547,7 @@ public class MessageCenter
         if (cbInfo.cbType == null)
             return;
 
-        s_dequeInvokers.AddToBack(new MsgInvoker<T1, T2>(cbInfo, data1, data2));
+        s_queueInvokers.Enqueue(new MsgInvoker<T1, T2>(cbInfo, data1, data2));
     }
 
     public static void PostMessage<T1, T2, T3>(MsgId msgId, T1 data1, T2 data2, T3 data3)
@@ -557,7 +556,7 @@ public class MessageCenter
         if (cbInfo.cbType == null)
             return;
 
-        s_dequeInvokers.AddToBack(new MsgInvoker<T1, T2, T3>(cbInfo, data1, data2, data3));
+        s_queueInvokers.Enqueue(new MsgInvoker<T1, T2, T3>(cbInfo, data1, data2, data3));
     }
 
     public static void PostMessage<T1, T2, T3, T4>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4)
@@ -566,7 +565,7 @@ public class MessageCenter
         if (cbInfo.cbType == null)
             return;
 
-        s_dequeInvokers.AddToBack(new MsgInvoker<T1, T2, T3, T4>(cbInfo, data1, data2, data3, data4));
+        s_queueInvokers.Enqueue(new MsgInvoker<T1, T2, T3, T4>(cbInfo, data1, data2, data3, data4));
     }
 
     public static void PostMessage<T1, T2, T3, T4, T5>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5)
@@ -575,7 +574,7 @@ public class MessageCenter
         if (cbInfo.cbType == null)
             return;
 
-        s_dequeInvokers.AddToBack(new MsgInvoker<T1, T2, T3, T4, T5>(cbInfo, data1, data2, data3, data4, data5));
+        s_queueInvokers.Enqueue(new MsgInvoker<T1, T2, T3, T4, T5>(cbInfo, data1, data2, data3, data4, data5));
     }
 
     public static void PostMessage<T1, T2, T3, T4, T5, T6>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6)
@@ -584,7 +583,7 @@ public class MessageCenter
         if (cbInfo.cbType == null)
             return;
 
-        s_dequeInvokers.AddToBack(new MsgInvoker<T1, T2, T3, T4, T5, T6>(cbInfo, data1, data2, data3, data4, data5, data6));
+        s_queueInvokers.Enqueue(new MsgInvoker<T1, T2, T3, T4, T5, T6>(cbInfo, data1, data2, data3, data4, data5, data6));
     }
 
     public static void PostMessage<T1, T2, T3, T4, T5, T6, T7>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7)
@@ -593,7 +592,7 @@ public class MessageCenter
         if (cbInfo.cbType == null)
             return;
 
-        s_dequeInvokers.AddToBack(new MsgInvoker<T1, T2, T3, T4, T5, T6, T7>(cbInfo, data1, data2, data3, data4, data5, data6, data7));
+        s_queueInvokers.Enqueue(new MsgInvoker<T1, T2, T3, T4, T5, T6, T7>(cbInfo, data1, data2, data3, data4, data5, data6, data7));
     }
 
     public static void PostMessage<T1, T2, T3, T4, T5, T6, T7, T8>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7, T8 data8)
@@ -602,7 +601,7 @@ public class MessageCenter
         if (cbInfo.cbType == null)
             return;
 
-        s_dequeInvokers.AddToBack(new MsgInvoker<T1, T2, T3, T4, T5, T6, T7, T8>(cbInfo, data1, data2, data3, data4, data5, data6, data7, data8));
+        s_queueInvokers.Enqueue(new MsgInvoker<T1, T2, T3, T4, T5, T6, T7, T8>(cbInfo, data1, data2, data3, data4, data5, data6, data7, data8));
     }
 
     public static void PostMessage<T1, T2, T3, T4, T5, T6, T7, T8, T9>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7, T8 data8, T9 data9)
@@ -611,7 +610,7 @@ public class MessageCenter
         if (cbInfo.cbType == null)
             return;
 
-        s_dequeInvokers.AddToBack(new MsgInvoker<T1, T2, T3, T4, T5, T6, T7, T8, T9>(cbInfo, data1, data2, data3, data4, data5, data6, data7, data8, data9));
+        s_queueInvokers.Enqueue(new MsgInvoker<T1, T2, T3, T4, T5, T6, T7, T8, T9>(cbInfo, data1, data2, data3, data4, data5, data6, data7, data8, data9));
     }
 
     public static void PostMessage<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(MsgId msgId, T1 data1, T2 data2, T3 data3, T4 data4, T5 data5, T6 data6, T7 data7, T8 data8, T9 data9, T10 data10)
@@ -620,7 +619,7 @@ public class MessageCenter
         if (cbInfo.cbType == null)
             return;
 
-        s_dequeInvokers.AddToBack(new MsgInvoker<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(cbInfo, data1, data2, data3, data4, data5, data6, data7, data8, data9, data10));
+        s_queueInvokers.Enqueue(new MsgInvoker<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(cbInfo, data1, data2, data3, data4, data5, data6, data7, data8, data9, data10));
     }
     #endregion
 
@@ -644,6 +643,8 @@ public class MessageCenter
             }
 
             lst = cbInfo.cbLst;
+            if (lst != null && lst.Count == 0) // 让泛型方法减少一个判断
+                lst = null;
         }
         return lst;
     }
@@ -669,9 +670,9 @@ public class MessageCenter
     public static void Update()
     {
         int invokeCount = 0;
-        while(s_dequeInvokers.Count > 0 && invokeCount < Invoke_Count_Per_Update)
+        while(s_queueInvokers.Count > 0 && invokeCount < Invoke_Count_Per_Update)
         {
-            IMsgInvoker invoker = s_dequeInvokers.RemoveFromFront();
+            IMsgInvoker invoker = s_queueInvokers.Dequeue();
             invoker.Invoke();
             invokeCount++;
         }
@@ -702,6 +703,13 @@ public class MessageCenter
         {
             return obj.GetHashCode();
         }
+    }
+    #endregion
+
+    #region CommonFunc
+    public static void LogException(Exception ex)
+    {
+        Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
     }
     #endregion
 }

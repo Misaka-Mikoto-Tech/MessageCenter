@@ -32,7 +32,7 @@ public class MsgInvoker : IMsgInvoker
             }
             catch(Exception ex)
             {
-                Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
+                MessageCenter.LogException(ex);
             }
         }
     }
@@ -60,7 +60,7 @@ public class MsgInvoker<T1> : IMsgInvoker
             }
             catch (Exception ex)
             {
-                Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
+                MessageCenter.LogException(ex);
             }
         }
     }
@@ -90,7 +90,7 @@ public class MsgInvoker<T1, T2> : IMsgInvoker
             }
             catch (Exception ex)
             {
-                Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
+                MessageCenter.LogException(ex);
             }
         }
     }
@@ -122,7 +122,7 @@ public class MsgInvoker<T1, T2, T3> : IMsgInvoker
             }
             catch (Exception ex)
             {
-                Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
+                MessageCenter.LogException(ex);
             }
         }
     }
@@ -156,7 +156,7 @@ public class MsgInvoker<T1, T2, T3, T4> : IMsgInvoker
             }
             catch (Exception ex)
             {
-                Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
+                MessageCenter.LogException(ex);
             }
         }
     }
@@ -192,7 +192,7 @@ public class MsgInvoker<T1, T2, T3, T4, T5> : IMsgInvoker
             }
             catch (Exception ex)
             {
-                Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
+                MessageCenter.LogException(ex);
             }
         }
     }
@@ -230,7 +230,7 @@ public class MsgInvoker<T1, T2, T3, T4, T5, T6> : IMsgInvoker
             }
             catch (Exception ex)
             {
-                Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
+                MessageCenter.LogException(ex);
             }
         }
     }
@@ -270,7 +270,7 @@ public class MsgInvoker<T1, T2, T3, T4, T5, T6, T7> : IMsgInvoker
             }
             catch (Exception ex)
             {
-                Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
+                MessageCenter.LogException(ex);
             }
         }
     }
@@ -312,7 +312,7 @@ public class MsgInvoker<T1, T2, T3, T4, T5, T6, T7, T8> : IMsgInvoker
             }
             catch (Exception ex)
             {
-                Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
+                MessageCenter.LogException(ex);
             }
         }
     }
@@ -356,7 +356,7 @@ public class MsgInvoker<T1, T2, T3, T4, T5, T6, T7, T8, T9> : IMsgInvoker
             }
             catch (Exception ex)
             {
-                Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
+                MessageCenter.LogException(ex);
             }
         }
     }
@@ -402,7 +402,7 @@ public class MsgInvoker<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : IMsgInvoker
             }
             catch (Exception ex)
             {
-                Debug.LogErrorFormat("执行消息出错:{0}\r\nstack:\r\n:{1}", ex.Message, ex.StackTrace);
+                MessageCenter.LogException(ex);
             }
         }
     }

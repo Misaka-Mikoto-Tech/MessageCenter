@@ -29,6 +29,7 @@ public class MessageCenter
     {
         public MsgId            msgId;
         public List<Delegate>   cbLst;
+        //public List<object>     static_objLst; // 静态回调关联的 object, 不打算启用，原因是静态回调不属于任何对象，强行关联会造成意义混乱
         public Type             cbType;
     }
 

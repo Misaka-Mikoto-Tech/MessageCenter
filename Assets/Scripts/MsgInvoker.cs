@@ -12,6 +12,37 @@ interface IMsgInvoker
     void Invoke();
 }
 
+/// <summary>
+/// 不定参数的 Invoker, 注意：此类型执行性能比较差
+/// </summary>
+public class MsgInvokerDynamic : IMsgInvoker
+{
+    private MessageCenter.CallbackInfo _cbInfo;
+    private object[] _args;
+
+    public MsgInvokerDynamic(MessageCenter.CallbackInfo cbInfo, params object[] args)
+    {
+        _cbInfo = cbInfo;
+        _args = args;
+    }
+
+    public void Invoke()
+    {
+        List<Delegate> cbLst = _cbInfo.cbLst;
+        for (int i = 0, imax = cbLst.Count; i < imax; i++)
+        {
+            try
+            {
+                cbLst[i].DynamicInvoke(_args);
+            }
+            catch (Exception ex)
+            {
+                MessageCenter.LogException(ex);
+            }
+        }
+    }
+}
+
 public class MsgInvoker : IMsgInvoker
 {
     private MessageCenter.CallbackInfo _cbInfo;

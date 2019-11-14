@@ -61,7 +61,7 @@ public class MessageCenter
     /// <param name="callback"></param>
     public static void Register(MsgType msgType, Action callback)
     {
-        RegisterInternal(msgType.msgId, callback, typeof(Action));
+        RegisterWithId(msgType.msgId, callback);
     }
 
     /// <summary>
@@ -72,7 +72,7 @@ public class MessageCenter
     /// <param name="callback"></param>
     public static void Register<T1>(MsgType<T1> msgType, Action<T1> callback)
     {
-        RegisterInternal(msgType.msgId, callback, typeof(Action<T1>));
+        RegisterWithId(msgType.msgId, callback);
     }
 
     /// <summary>
@@ -84,7 +84,7 @@ public class MessageCenter
     /// <param name="callback"></param>
     public static void Register<T1, T2>(MsgType<T1, T2> msgType, Action<T1, T2> callback)
     {
-        RegisterInternal(msgType.msgId, callback, typeof(Action<T1, T2>));
+        RegisterWithId(msgType.msgId, callback);
     }
 
     /// <summary>
@@ -97,7 +97,7 @@ public class MessageCenter
     /// <param name="callback"></param>
     public static void Register<T1, T2, T3>(MsgType<T1, T2, T3> msgType, Action<T1, T2, T3> callback)
     {
-        RegisterInternal(msgType.msgId, callback, typeof(Action<T1, T2, T3>));
+        RegisterWithId(msgType.msgId, callback);
     }
 
     /// <summary>
@@ -111,7 +111,7 @@ public class MessageCenter
     /// <param name="callback"></param>
     public static void Register<T1, T2, T3, T4>(MsgType<T1, T2, T3, T4> msgType, Action<T1, T2, T3, T4> callback)
     {
-        RegisterInternal(msgType.msgId, callback, typeof(Action<T1, T2, T3, T4>));
+        RegisterWithId(msgType.msgId, callback);
     }
 
     /// <summary>
@@ -126,7 +126,7 @@ public class MessageCenter
     /// <param name="callback"></param>
     public static void Register<T1, T2, T3, T4, T5>(MsgType<T1, T2, T3, T4, T5> msgType, Action<T1, T2, T3, T4, T5> callback)
     {
-        RegisterInternal(msgType.msgId, callback, typeof(Action<T1, T2, T3, T4, T5>));
+        RegisterWithId(msgType.msgId, callback);
     }
 
     /// <summary>
@@ -142,7 +142,7 @@ public class MessageCenter
     /// <param name="callback"></param>
     public static void Register<T1, T2, T3, T4, T5, T6>(MsgType<T1, T2, T3, T4, T5, T6> msgType, Action<T1, T2, T3, T4, T5, T6> callback)
     {
-        RegisterInternal(msgType.msgId, callback, typeof(Action<T1, T2, T3, T4, T5, T6>));
+        RegisterWithId(msgType.msgId, callback);
     }
 
     /// <summary>
@@ -159,7 +159,7 @@ public class MessageCenter
     /// <param name="callback"></param>
     public static void Register<T1, T2, T3, T4, T5, T6, T7>(MsgType<T1, T2, T3, T4, T5, T6, T7> msgType, Action<T1, T2, T3, T4, T5, T6, T7> callback)
     {
-        RegisterInternal(msgType.msgId, callback, typeof(Action<T1, T2, T3, T4, T5, T6, T7>));
+        RegisterWithId(msgType.msgId, callback);
     }
 
     /// <summary>
@@ -177,7 +177,7 @@ public class MessageCenter
     /// <param name="callback"></param>
     public static void Register<T1, T2, T3, T4, T5, T6, T7, T8>(MsgType<T1, T2, T3, T4, T5, T6, T7, T8> msgType, Action<T1, T2, T3, T4, T5, T6, T7, T8> callback)
     {
-        RegisterInternal(msgType.msgId, callback, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8>));
+        RegisterWithId(msgType.msgId, callback);
     }
 
     /// <summary>
@@ -196,7 +196,7 @@ public class MessageCenter
     /// <param name="callback"></param>
     public static void Register<T1, T2, T3, T4, T5, T6, T7, T8, T9>(MsgType<T1, T2, T3, T4, T5, T6, T7, T8, T9> msgType, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9> callback)
     {
-        RegisterInternal(msgType.msgId, callback, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9>));
+        RegisterWithId(msgType.msgId, callback);
     }
 
     /// <summary>
@@ -216,16 +216,16 @@ public class MessageCenter
     /// <param name="callback"></param>
     public static void Register<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(MsgType<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> msgType, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> callback)
     {
-        RegisterInternal(msgType.msgId, callback, typeof(Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>));
+        RegisterWithId(msgType.msgId, callback);
     }
 
     /// <summary>
-    /// 将函数体移动到 RegisterInternal 以避免 Register 泛型代码膨胀
+    /// 注册回调非泛型重载
     /// </summary>
     /// <param name="msgId"></param>
     /// <param name="callback"></param>
     /// <param name="cbType"></param>
-    private static void RegisterInternal(MsgId msgId, Delegate callback, Type cbType)
+    public static void RegisterWithId(MsgId msgId, Delegate callback)
     {
         // 记录此对象注册的协议Id(并且不允许一个对象重复订阅同一个消息)
         object obj = callback.Target;
@@ -253,9 +253,10 @@ public class MessageCenter
         CallbackInfo cbInfo;
         if (s_dicCallbacks.TryGetValue(msgId, out cbInfo))
         {
-            if (cbInfo.cbType != cbType)
+            Type cbType__ = callback.GetType();
+            if (cbInfo.cbType != cbType__)
             {
-                Debug.LogErrorFormat("错误的消息回调函数参数类型:Msg:{0}, 期望类型:{1}", msgId, cbType.Name);
+                Debug.LogErrorFormat("错误的消息回调函数参数类型:Msg:{0}, 期望类型:{1}", msgId, cbType__.Name);
                 return;
             }
 
@@ -317,66 +318,65 @@ public class MessageCenter
 
     public static void UnRegister(MsgType msgType, Action callback)
     {
-        UnRegisterInternal(msgType.msgId, callback);
+        UnRegisterWithId(msgType.msgId, callback);
     }
 
     public static void UnRegister<T1>(MsgType<T1> msgType, Action<T1> callback)
     {
-        UnRegisterInternal(msgType.msgId, callback);
+        UnRegisterWithId(msgType.msgId, callback);
     }
 
     public static void UnRegister<T1, T2>(MsgType<T1, T2> msgType, Action<T1, T2> callback)
     {
-        UnRegisterInternal(msgType.msgId, callback);
+        UnRegisterWithId(msgType.msgId, callback);
     }
 
     public static void UnRegister<T1, T2, T3>(MsgType<T1, T2, T3> msgType, Action<T1, T2, T3> callback)
     {
-        UnRegisterInternal(msgType.msgId, callback);
+        UnRegisterWithId(msgType.msgId, callback);
     }
 
     public static void UnRegister<T1, T2, T3, T4>(MsgType<T1, T2, T3, T4> msgType, Action<T1, T2, T3, T4> callback)
     {
-        UnRegisterInternal(msgType.msgId, callback);
+        UnRegisterWithId(msgType.msgId, callback);
     }
 
     public static void UnRegister<T1, T2, T3, T4, T5>(MsgType<T1, T2, T3, T4, T5> msgType, Action<T1, T2, T3, T4, T5> callback)
     {
-        UnRegisterInternal(msgType.msgId, callback);
+        UnRegisterWithId(msgType.msgId, callback);
     }
 
     public static void UnRegister<T1, T2, T3, T4, T5, T6>(MsgType<T1, T2, T3, T4, T5, T6> msgType, Action<T1, T2, T3, T4, T5, T6> callback)
     {
-        UnRegisterInternal(msgType.msgId, callback);
+        UnRegisterWithId(msgType.msgId, callback);
     }
 
     public static void UnRegister<T1, T2, T3, T4, T5, T6, T7>(MsgType<T1, T2, T3, T4, T5, T6, T7> msgType, Action<T1, T2, T3, T4, T5, T6, T7> callback)
     {
-        UnRegisterInternal(msgType.msgId, callback);
+        UnRegisterWithId(msgType.msgId, callback);
     }
 
     public static void UnRegister<T1, T2, T3, T4, T5, T6, T7, T8>(MsgType<T1, T2, T3, T4, T5, T6, T7, T8> msgType, Action<T1, T2, T3, T4, T5, T6, T7, T8> callback)
     {
-        UnRegisterInternal(msgType.msgId, callback);
+        UnRegisterWithId(msgType.msgId, callback);
     }
 
     public static void UnRegister<T1, T2, T3, T4, T5, T6, T7, T8, T9>(MsgType<T1, T2, T3, T4, T5, T6, T7, T8, T9> msgType, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9> callback)
     {
-        UnRegisterInternal(msgType.msgId, callback);
+        UnRegisterWithId(msgType.msgId, callback);
     }
 
     public static void UnRegister<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(MsgType<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> msgType, Action<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> callback)
     {
-        UnRegisterInternal(msgType.msgId, callback);
+        UnRegisterWithId(msgType.msgId, callback);
     }
 
-
     /// <summary>
-    /// 移除指定回调实现
+    /// 移除回调非泛型重载
     /// </summary>
     /// <param name="msgId"></param>
     /// <param name="callback"></param>
-    public static void UnRegisterInternal(MsgId msgId, Delegate callback)
+    public static void UnRegisterWithId(MsgId msgId, Delegate callback)
     {
         if (callback == null)
             return;
@@ -621,6 +621,34 @@ public class MessageCenter
             }
         }
     }
+
+    /// <summary>
+    /// SendMessage 的非泛型不定参数重载，注意：此方法性能比较差
+    /// </summary>
+    /// <param name="msgId"></param>
+    /// <param name="args"></param>
+    public static void SendMessage(MsgId msgId, params object[] args)
+    {
+        CallbackInfo cbInfo;
+        if (s_dicCallbacks.TryGetValue(msgId, out cbInfo))
+        {
+            List<Delegate> lst = cbInfo.cbLst;
+            if(lst != null)
+            {
+                for(int i = 0, imax = lst.Count; i < imax; i++)
+                {
+                    try
+                    {
+                        lst[i].DynamicInvoke(args);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogException(ex);
+                    }
+                }
+            }
+        }
+    }
     #endregion
 
     #region PostMessage
@@ -725,6 +753,20 @@ public class MessageCenter
             return;
 
         s_queueInvokers.Enqueue(new MsgInvoker<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(cbInfo, data1, data2, data3, data4, data5, data6, data7, data8, data9, data10));
+    }
+
+    /// <summary>
+    /// PostMessage 的非泛型不定参数重载，注意：此方法性能比较差
+    /// </summary>
+    /// <param name="msgId"></param>
+    /// <param name="args"></param>
+    public static void PostMessage(MsgId msgId, params object[] args)
+    {
+        CallbackInfo cbInfo;
+        if (s_dicCallbacks.TryGetValue(msgId, out cbInfo))
+        {
+            s_queueInvokers.Enqueue(new MsgInvokerDynamic(cbInfo, args));
+        }
     }
     #endregion
 

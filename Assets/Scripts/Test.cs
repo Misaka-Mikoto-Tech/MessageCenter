@@ -10,12 +10,15 @@ public class Test : MonoBehaviour {
     {
         MessageCenter.Register(MsgTypeVar.MsgA, OnMsgA);
         MessageCenter.Register(MsgTypeVar.MsgB, OnMsgB);
+        MessageCenter.Register(MsgTypeVar.MsgC, OnMsgC);
     }
 
     void OnDestroy()
     {
-        MessageCenter.UnRegister(MsgTypeVar.MsgA, OnMsgA); // TODO 可以由 UIManager.CloseUI 自动执行
+        // TODO 可以由 UIManager.CloseUI 自动执行(MessageCenter.UnRegisterOfAllObj)
+        MessageCenter.UnRegister(MsgTypeVar.MsgA, OnMsgA);
         MessageCenter.UnRegister(MsgTypeVar.MsgB, OnMsgB);
+        MessageCenter.UnRegister(MsgTypeVar.MsgC, OnMsgC);
     }
 
     void OnEnable()
@@ -40,6 +43,11 @@ public class Test : MonoBehaviour {
         Debug.LogFormat("OnMsgB:{0}, {1}, time:{2}", f, str, Time.time);
     }
 
+    static void OnMsgC(string str)
+    {
+        Debug.LogFormat("OnMsgC:{0}, time:{1}", str, Time.time);
+    }
+
     IEnumerator coTestMessage()
     {
         MessageCenter.SendMessage(MsgTypeVar.MsgA, 5);
@@ -57,13 +65,19 @@ public class Test : MonoBehaviour {
         yield return new WaitForSeconds(1.2f);
 
         Debug.LogFormat("移除对象 {0} 的所有回调", this.name);
-        MessageCenter.UnRegisterOfObj(this);
+        MessageCenter.UnRegisterOfAllObj(this);
         // 以下都不会执行
         MessageCenter.SendMessage(MsgTypeVar.MsgA, 666);
         MessageCenter.SendMessage(MsgTypeVar.MsgB, 2f, "Misaka");
 
         MessageCenter.SendMessage(MsgTypeVar.MsgA, 123);
         MessageCenter.SendMessage(MsgTypeVar.MsgB, 5f, "Mikoto");
+
+        // MsgC 依旧存在
+        MessageCenter.SendMessage(MsgTypeVar.MsgC, "发送信息给C");
+        Debug.Log("反注册 OnMsgC");
+        MessageCenter.UnRegister(MsgTypeVar.MsgC, OnMsgC);
+        MessageCenter.SendMessage(MsgTypeVar.MsgC, "再次发送信息给C");
     }
 
     /// <summary>

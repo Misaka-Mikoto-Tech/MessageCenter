@@ -283,7 +283,7 @@ public class MessageCenter
     /// 移除指定对象订阅的所有回调
     /// </summary>
     /// <param name="obj"></param>
-    public static void UnRegisterOfObj(object obj)
+    public static void UnRegisterOfAllObj(object obj)
     {
         if (ReferenceEquals(obj, null))
             return;

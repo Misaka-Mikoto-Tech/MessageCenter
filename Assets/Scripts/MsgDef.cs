@@ -7,6 +7,7 @@ public enum MsgId
 {
     MsgA,
     MsgB,
+    MsgC,
 }
 
 /// <summary>
@@ -16,6 +17,7 @@ public static class MsgTypeVar
 {
     public static readonly MsgType<int>                 MsgA = new MsgType<int>(MsgId.MsgA);
     public static readonly MsgType<float, string>       MsgB = new MsgType<float, string>(MsgId.MsgB);
+    public static readonly MsgType<string>              MsgC = new MsgType<string>(MsgId.MsgC);
 }
 
 

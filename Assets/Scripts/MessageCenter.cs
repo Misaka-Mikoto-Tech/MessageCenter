@@ -51,6 +51,14 @@ public class MessageCenter
 
     public static void BindType(MsgId msgId, Type cbType)
     {
+#if UNITY_EDITOR
+        CallbackInfo info;
+        if(s_dicCallbacks.TryGetValue(msgId, out info))
+        {
+            throw new Exception(string.Format("消息ID:{0} 重复绑定类型:{1}, {2}", msgId, cbType, info.cbType));
+        }
+#endif
+
         s_dicCallbacks.Add(msgId, new CallbackInfo() { msgId = msgId, cbType = cbType });
     }
 

@@ -35,7 +35,7 @@ public struct MsgType : IMsgType
     public MsgType(MsgId msgId)
     {
         this.msgId = msgId;
-        MessageCenter.BindType(msgId, type);
+        MessageCenter.BindType(msgId, type, typeof(MsgType));
     }
 }
 public struct MsgType<T1> : IMsgType
@@ -46,7 +46,7 @@ public struct MsgType<T1> : IMsgType
     public MsgType(MsgId msgId)
     {
         this.msgId = msgId;
-        MessageCenter.BindType(msgId, type);
+        MessageCenter.BindType(msgId, type, typeof(MsgType<T1>));
     }
 }
 public struct MsgType<T1, T2> : IMsgType
@@ -57,7 +57,7 @@ public struct MsgType<T1, T2> : IMsgType
     public MsgType(MsgId msgId)
     {
         this.msgId = msgId;
-        MessageCenter.BindType(msgId, type);
+        MessageCenter.BindType(msgId, type, typeof(MsgType<T1, T2>));
     }
 }
 public struct MsgType<T1, T2, T3> : IMsgType
@@ -68,7 +68,7 @@ public struct MsgType<T1, T2, T3> : IMsgType
     public MsgType(MsgId msgId)
     {
         this.msgId = msgId;
-        MessageCenter.BindType(msgId, type);
+        MessageCenter.BindType(msgId, type, typeof(MsgType<T1, T2, T3>));
     }
 }
 public struct MsgType<T1, T2, T3, T4> : IMsgType
@@ -79,7 +79,7 @@ public struct MsgType<T1, T2, T3, T4> : IMsgType
     public MsgType(MsgId msgId)
     {
         this.msgId = msgId;
-        MessageCenter.BindType(msgId, type);
+        MessageCenter.BindType(msgId, type, typeof(MsgType<T1, T2, T3, T4>));
     }
 }
 public struct MsgType<T1, T2, T3, T4, T5> : IMsgType
@@ -90,7 +90,7 @@ public struct MsgType<T1, T2, T3, T4, T5> : IMsgType
     public MsgType(MsgId msgId)
     {
         this.msgId = msgId;
-        MessageCenter.BindType(msgId, type);
+        MessageCenter.BindType(msgId, type, typeof(MsgType<T1, T2, T3, T4, T5>));
     }
 }
 public struct MsgType<T1, T2, T3, T4, T5, T6> : IMsgType
@@ -101,7 +101,7 @@ public struct MsgType<T1, T2, T3, T4, T5, T6> : IMsgType
     public MsgType(MsgId msgId)
     {
         this.msgId = msgId;
-        MessageCenter.BindType(msgId, type);
+        MessageCenter.BindType(msgId, type, typeof(MsgType<T1, T2, T3, T4, T5, T6>));
     }
 }
 public struct MsgType<T1, T2, T3, T4, T5, T6, T7> : IMsgType
@@ -112,7 +112,7 @@ public struct MsgType<T1, T2, T3, T4, T5, T6, T7> : IMsgType
     public MsgType(MsgId msgId)
     {
         this.msgId = msgId;
-        MessageCenter.BindType(msgId, type);
+        MessageCenter.BindType(msgId, type, typeof(MsgType<T1, T2, T3, T4, T5, T6, T7>));
     }
 }
 public struct MsgType<T1, T2, T3, T4, T5, T6, T7, T8> : IMsgType
@@ -123,7 +123,7 @@ public struct MsgType<T1, T2, T3, T4, T5, T6, T7, T8> : IMsgType
     public MsgType(MsgId msgId)
     {
         this.msgId = msgId;
-        MessageCenter.BindType(msgId, type);
+        MessageCenter.BindType(msgId, type, typeof(MsgType<T1, T2, T3, T4, T5, T6, T7, T8>));
     }
 }
 public struct MsgType<T1, T2, T3, T4, T5, T6, T7, T8, T9> : IMsgType
@@ -134,7 +134,7 @@ public struct MsgType<T1, T2, T3, T4, T5, T6, T7, T8, T9> : IMsgType
     public MsgType(MsgId msgId)
     {
         this.msgId = msgId;
-        MessageCenter.BindType(msgId, type);
+        MessageCenter.BindType(msgId, type, typeof(MsgType<T1, T2, T3, T4, T5, T6, T7, T8, T9>));
     }
 }
 public struct MsgType<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : IMsgType
@@ -145,7 +145,7 @@ public struct MsgType<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : IMsgType
     public MsgType(MsgId msgId)
     {
         this.msgId = msgId;
-        MessageCenter.BindType(msgId, type);
+        MessageCenter.BindType(msgId, type, typeof(MsgType<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>));
     }
 }
 #endregion

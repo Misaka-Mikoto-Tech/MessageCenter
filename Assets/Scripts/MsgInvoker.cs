@@ -7,8 +7,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-interface IMsgInvoker
+public interface IMsgInvoker
 {
+    MsgId msgId { get; }
     void Invoke();
 }
 
@@ -17,6 +18,8 @@ interface IMsgInvoker
 /// </summary>
 public class MsgInvokerDynamic : IMsgInvoker
 {
+    public MsgId msgId { get { return _cbInfo.msgId; } }
+
     private MessageCenter.CallbackInfo _cbInfo;
     private object[] _args;
 
@@ -45,6 +48,8 @@ public class MsgInvokerDynamic : IMsgInvoker
 
 public class MsgInvoker : IMsgInvoker
 {
+    public MsgId msgId { get { return _cbInfo.msgId; } }
+
     private MessageCenter.CallbackInfo _cbInfo;
 
     public MsgInvoker(MessageCenter.CallbackInfo cbInfo)
@@ -71,6 +76,8 @@ public class MsgInvoker : IMsgInvoker
 
 public class MsgInvoker<T1> : IMsgInvoker
 {
+    public MsgId msgId { get { return _cbInfo.msgId; } }
+
     private MessageCenter.CallbackInfo _cbInfo;
     private T1 _data1;
 
@@ -99,6 +106,8 @@ public class MsgInvoker<T1> : IMsgInvoker
 
 public class MsgInvoker<T1, T2> : IMsgInvoker
 {
+    public MsgId msgId { get { return _cbInfo.msgId; } }
+
     private MessageCenter.CallbackInfo _cbInfo;
     private T1 _data1;
     private T2 _data2;
@@ -129,6 +138,8 @@ public class MsgInvoker<T1, T2> : IMsgInvoker
 
 public class MsgInvoker<T1, T2, T3> : IMsgInvoker
 {
+    public MsgId msgId { get { return _cbInfo.msgId; } }
+
     private MessageCenter.CallbackInfo _cbInfo;
     private T1 _data1;
     private T2 _data2;
@@ -161,6 +172,8 @@ public class MsgInvoker<T1, T2, T3> : IMsgInvoker
 
 public class MsgInvoker<T1, T2, T3, T4> : IMsgInvoker
 {
+    public MsgId msgId { get { return _cbInfo.msgId; } }
+
     private MessageCenter.CallbackInfo _cbInfo;
     private T1 _data1;
     private T2 _data2;
@@ -195,6 +208,8 @@ public class MsgInvoker<T1, T2, T3, T4> : IMsgInvoker
 
 public class MsgInvoker<T1, T2, T3, T4, T5> : IMsgInvoker
 {
+    public MsgId msgId { get { return _cbInfo.msgId; } }
+
     private MessageCenter.CallbackInfo _cbInfo;
     private T1 _data1;
     private T2 _data2;
@@ -231,6 +246,8 @@ public class MsgInvoker<T1, T2, T3, T4, T5> : IMsgInvoker
 
 public class MsgInvoker<T1, T2, T3, T4, T5, T6> : IMsgInvoker
 {
+    public MsgId msgId { get { return _cbInfo.msgId; } }
+
     private MessageCenter.CallbackInfo _cbInfo;
     private T1 _data1;
     private T2 _data2;
@@ -269,6 +286,8 @@ public class MsgInvoker<T1, T2, T3, T4, T5, T6> : IMsgInvoker
 
 public class MsgInvoker<T1, T2, T3, T4, T5, T6, T7> : IMsgInvoker
 {
+    public MsgId msgId { get { return _cbInfo.msgId; } }
+
     private MessageCenter.CallbackInfo _cbInfo;
     private T1 _data1;
     private T2 _data2;
@@ -309,6 +328,8 @@ public class MsgInvoker<T1, T2, T3, T4, T5, T6, T7> : IMsgInvoker
 
 public class MsgInvoker<T1, T2, T3, T4, T5, T6, T7, T8> : IMsgInvoker
 {
+    public MsgId msgId { get { return _cbInfo.msgId; } }
+
     private MessageCenter.CallbackInfo _cbInfo;
     private T1 _data1;
     private T2 _data2;
@@ -351,6 +372,8 @@ public class MsgInvoker<T1, T2, T3, T4, T5, T6, T7, T8> : IMsgInvoker
 
 public class MsgInvoker<T1, T2, T3, T4, T5, T6, T7, T8, T9> : IMsgInvoker
 {
+    public MsgId msgId { get { return _cbInfo.msgId; } }
+
     private MessageCenter.CallbackInfo _cbInfo;
     private T1 _data1;
     private T2 _data2;
@@ -395,6 +418,8 @@ public class MsgInvoker<T1, T2, T3, T4, T5, T6, T7, T8, T9> : IMsgInvoker
 
 public class MsgInvoker<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : IMsgInvoker
 {
+    public MsgId msgId { get { return _cbInfo.msgId; } }
+
     private MessageCenter.CallbackInfo _cbInfo;
     private T1 _data1;
     private T2 _data2;
@@ -436,5 +461,47 @@ public class MsgInvoker<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : IMsgInvoker
                 MessageCenter.LogException(ex);
             }
         }
+    }
+}
+
+public static class MsgInvokerPool
+{
+    private static Dictionary<MsgId, List<IMsgInvoker>> s_dic = new Dictionary<MsgId, List<IMsgInvoker>>(MsgIdComparer.instance);
+
+    public static IMsgInvoker GetInvoker(MsgId msgId, Type invokerType)
+    {
+        List<IMsgInvoker> lst;
+        if(s_dic.TryGetValue(msgId, out lst))
+        {
+            int cnt = lst.Count;
+            if(cnt> 0)
+            {
+                IMsgInvoker ret = lst[cnt];
+                lst.RemoveAt(cnt);
+                return ret;
+            }
+        }
+        return Activator.CreateInstance(invokerType) as IMsgInvoker;
+    }
+
+    public static void Recycle(IMsgInvoker invoker)
+    {
+        MsgId msgId = invoker.msgId;
+        List<IMsgInvoker> lst;
+        if (s_dic.TryGetValue(msgId, out lst))
+        {
+            lst.Add(invoker);
+        }
+        else
+        {
+            lst = new List<IMsgInvoker>();
+            lst.Add(invoker);
+            s_dic.Add(msgId, lst);
+        }
+    }
+
+    public static void ClearCache()
+    {
+        s_dic.Clear();
     }
 }

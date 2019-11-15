@@ -31,6 +31,7 @@ public class MessageCenter
         public List<Delegate>   cbLst;
         //public List<object>     static_objLst; // 静态回调关联的 object, 不打算启用，原因是静态回调不属于任何对象，强行关联会造成意义混乱
         public Type             cbType;
+        public Type             invokerType;
     }
 
     /// <summary>
@@ -49,7 +50,7 @@ public class MessageCenter
     private static Queue<IMsgInvoker> s_queueInvokers = new Queue<IMsgInvoker>();
 
 
-    public static void BindType(MsgId msgId, Type cbType)
+    public static void BindType(MsgId msgId, Type cbType, Type invokerType)
     {
 #if UNITY_EDITOR
         CallbackInfo info;
@@ -59,7 +60,7 @@ public class MessageCenter
         }
 #endif
 
-        s_dicCallbacks.Add(msgId, new CallbackInfo() { msgId = msgId, cbType = cbType });
+        s_dicCallbacks.Add(msgId, new CallbackInfo() { msgId = msgId, cbType = cbType, invokerType = invokerType });
     }
 
     #region Register
@@ -292,7 +293,7 @@ public class MessageCenter
     /// 移除指定对象订阅的所有回调
     /// </summary>
     /// <param name="obj"></param>
-    public static void UnRegisterOfAllObj(object obj)
+    public static void UnRegisterAllOfObj(object obj)
     {
         if (ReferenceEquals(obj, null))
             return;
@@ -834,33 +835,7 @@ public class MessageCenter
         }
     }
 
-    #region Comparer
-    class MsgIdComparer : IEqualityComparer<MsgId>
-    {
-        public static MsgIdComparer instance = new MsgIdComparer();
-
-        public bool Equals(MsgId x, MsgId y) { return (int)x == (int)y; }
-        public int GetHashCode(MsgId obj) { return (int)obj; }
-    }
-
-    /// <summary>
-    /// 由于继承自 UnityEngine.Object 的对象被重写了 operator equal, 因此可能出现多个对象被误判断为相等的问题
-    /// </summary>
-    class RefEqualComparer : IEqualityComparer<object>
-    {
-        public static RefEqualComparer instance = new RefEqualComparer();
-
-        public new bool Equals(object x, object y)
-        {
-            return ReferenceEquals(x, y);
-        }
-
-        public int GetHashCode(object obj)
-        {
-            return obj.GetHashCode();
-        }
-    }
-    #endregion
+    
 
     #region CommonFunc
     public static void LogException(Exception ex)
@@ -869,3 +844,31 @@ public class MessageCenter
     }
     #endregion
 }
+
+#region Comparer
+public class MsgIdComparer : IEqualityComparer<MsgId>
+{
+    public static MsgIdComparer instance = new MsgIdComparer();
+
+    public bool Equals(MsgId x, MsgId y) { return (int)x == (int)y; }
+    public int GetHashCode(MsgId obj) { return (int)obj; }
+}
+
+/// <summary>
+/// 由于继承自 UnityEngine.Object 的对象被重写了 operator equal, 因此可能出现多个对象被误判断为相等的问题
+/// </summary>
+class RefEqualComparer : IEqualityComparer<object>
+{
+    public static RefEqualComparer instance = new RefEqualComparer();
+
+    public new bool Equals(object x, object y)
+    {
+        return ReferenceEquals(x, y);
+    }
+
+    public int GetHashCode(object obj)
+    {
+        return obj.GetHashCode();
+    }
+}
+#endregion

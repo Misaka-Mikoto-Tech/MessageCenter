@@ -65,7 +65,7 @@ public class Test : MonoBehaviour {
         yield return new WaitForSeconds(1.2f);
 
         Debug.LogFormat("移除对象 {0} 的所有回调", this.name);
-        MessageCenter.UnRegisterOfAllObj(this);
+        MessageCenter.UnRegisterAllOfObj(this);
         // 以下都不会执行
         MessageCenter.SendMessage(MsgTypeVar.MsgA, 666);
         MessageCenter.SendMessage(MsgTypeVar.MsgB, 2f, "Misaka");
